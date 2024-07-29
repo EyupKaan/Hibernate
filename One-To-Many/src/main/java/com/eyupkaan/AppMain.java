@@ -43,25 +43,42 @@ public class AppMain {
         order3.setCreateDate(new Date());
         order3.setAmount(46.7F);
 
+        /*
         customer1.getOrders().add(order1);
+        customer1.getOrders().add(order2);
         customer2.getOrders().add(order2);
+        customer2.getOrders().add(order3);
         customer3.getOrders().add(order3);
+        customer3.getOrders().add(order1);
 
         order1.setCustomer(customer1);
+        order2.setCustomer(customer1);
+
         order2.setCustomer(customer2);
-        order3.setCustomer(customer3);
+        order3.setCustomer(customer2);
+        */
+
+        //FIXED
+        customer1.addOrder(order1);
+        customer1.addOrder(order2);
+
+        customer2.addOrder(order2);
+        customer2.addOrder(order3);
+
+        customer3.addOrder(order1);
+        customer3.addOrder(order3);
 
         try (Session session = Hibernateutil.getSessionFactory().openSession()) {
             Transaction transaction = null;
             transaction = session.beginTransaction();
 
-            session.save(customer1);
-            session.save(customer2);
-            session.save(customer3);
+            session.persist(customer1);
+            session.persist(customer2);
+            session.persist(customer3);
 
-            session.save(order1);
-            session.save(order2);
-            session.save(order3);
+            session.persist(order1);
+            session.persist(order2);
+            session.persist(order3);
 
             transaction.commit();
 

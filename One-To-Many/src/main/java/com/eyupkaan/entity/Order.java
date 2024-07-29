@@ -1,15 +1,12 @@
 package com.eyupkaan.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.Date;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,8 +17,7 @@ import java.util.Date;
 public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumn(name = "customer")
     private Customer customer;
 
     @Id
@@ -39,5 +35,6 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ORDER_DATE")
     private Date createDate;
+
 
 }

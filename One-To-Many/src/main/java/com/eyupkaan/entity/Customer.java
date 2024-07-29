@@ -3,21 +3,20 @@ package com.eyupkaan.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.HashSet;
 import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "T_CUSTOMER")
 public class Customer {
 
-    @OneToMany(mappedBy = "customer",
-                fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SELECT)
+    @OneToMany(
+            mappedBy = "customer",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Order> orders = new HashSet<Order>();
 
     @Id
@@ -36,7 +35,15 @@ public class Customer {
     @Setter
     private String lastName;
 
+    public void addOrder(Order order){
+        orders.add(order);
+        order.setCustomer(this);
+    }
 
+    public void removeOrder(Order order){
+        orders.add(order);
+        order.setCustomer(null);
+    }
 
 
     public Customer(){}
