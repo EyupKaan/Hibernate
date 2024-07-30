@@ -1,11 +1,19 @@
 package com.eyupkaan.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+
 @Entity
+@Table(name = "C_ADDRESS")
 public class Address {
 
     @ManyToMany(mappedBy = "addresses", fetch = FetchType.LAZY)
@@ -24,4 +32,10 @@ public class Address {
 
     @Column(name = "STREET")
     private String street;
+
+    public Address(String country, String city, String street) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+    }
 }

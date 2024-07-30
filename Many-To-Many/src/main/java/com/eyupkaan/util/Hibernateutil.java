@@ -12,41 +12,39 @@ import java.util.Properties;
 
 
 public class Hibernateutil {
-    private static ServiceRegistry serviceRegistry;
 
-    static{
-
-        try{
-            Configuration configuration=new Configuration();
-            configuration.configure();
-
-            Properties settings = new Properties();
-
-            settings.put(Environment.DRIVER, "org.postgresql.Driver");
-            settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/postgres?currentSchema=edudb");
-            settings.put(Environment.USER, "postgres");
-            settings.put(Environment.PASS, "postgres");
-
-            settings.put(Environment.SHOW_SQL, "true");
-            settings.put(Environment.FORMAT_SQL, "true");
-            settings.put(Environment.HBM2DDL_AUTO, "create");
-            settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-
-            configuration.setProperties(settings);
-
-            configuration.addAnnotatedClass(Customer.class);
-            configuration.addAnnotatedClass(Address.class);
-
-            serviceRegistry= new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-            configuration.buildSessionFactory(serviceRegistry);
-
-        }catch(Exception e){
-            System.err.println("Hata: "+e);
-        }
-
-    }
-
+    private static SessionFactory sessionFactory;
     public static SessionFactory getSessionFactory(){
-        return new Configuration().configure().buildSessionFactory();
+        if(sessionFactory == null){
+            try{
+                Configuration configuration = new Configuration();
+                Properties settings = new Properties();
+
+                settings.put(Environment.DRIVER, "org.postgresql.Driver");
+                settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/postgres?currentSchema=edudb");
+                settings.put(Environment.USER, "postgres");
+                settings.put(Environment.PASS, "postgres");
+
+                settings.put(Environment.SHOW_SQL, "true");
+                settings.put(Environment.FORMAT_SQL, "true");
+                settings.put(Environment.HBM2DDL_AUTO, "create");
+                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
+                configuration.setProperties(settings);
+
+                configuration.addAnnotatedClass(Customer.class);
+                configuration.addAnnotatedClass(Address.class);
+
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                throw e;
+            }
+        }
+        return sessionFactory;
     }
 }

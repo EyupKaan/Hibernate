@@ -14,6 +14,14 @@ import java.util.Set;
 public class Customer {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "CUSTOMERS_ADDRESS",
+        joinColumns = {
+                @JoinColumn(name = "CUSTOMER_ID", nullable = false)
+        },
+        inverseJoinColumns = {
+                @JoinColumn(name = "ADDRESS_ID", nullable = false)
+        }
+    )
     Set<Address> addresses = new HashSet<>();
 
     @Id
