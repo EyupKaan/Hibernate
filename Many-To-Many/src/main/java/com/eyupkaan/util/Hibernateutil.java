@@ -1,7 +1,7 @@
 package com.eyupkaan.util;
 
+import com.eyupkaan.entity.Address;
 import com.eyupkaan.entity.Customer;
-import com.eyupkaan.entity.Order;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -35,7 +35,7 @@ public class Hibernateutil {
             configuration.setProperties(settings);
 
             configuration.addAnnotatedClass(Customer.class);
-            configuration.addAnnotatedClass(Order.class);
+            configuration.addAnnotatedClass(Address.class);
 
             serviceRegistry= new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             configuration.buildSessionFactory(serviceRegistry);

@@ -6,19 +6,15 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "T_CUSTOMER")
 public class Customer {
 
-    @OneToMany(
-            mappedBy = "customer",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Order> orders = new HashSet<Order>();
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    Set<Address> addresses = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,18 +31,6 @@ public class Customer {
     @Getter
     @Setter
     private String lastName;
-
-    public void addOrder(Order order){
-        orders.add(order);
-        order.setCustomer(this);
-    }
-
-    public void removeOrder(Order order){
-        orders.add(order);
-        order.setCustomer(null);
-    }
-
-
     public Customer(){}
 
     public Customer(String firstName, String lastName) {
